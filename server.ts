@@ -6,6 +6,8 @@ const path = require("path");
 require("dotenv").config();
 const express = require("express");
 const cookieParser = require("cookie-parser");
+import { Request, Response, NextFunction } from 'express';
+
 require("dotenv").config();
 app.use(cookieParser());
 app.use(
@@ -21,7 +23,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.json({ limit: "10mb" }));
 app.use(bodyParser.urlencoded({ limit: "10mb", extended: true }));
 
-app.get("/", (req, res) => {
+app.get("/", (req:Request, res:Response) => {
   res.status(200).json({ message: "welcome" });
 });
 
