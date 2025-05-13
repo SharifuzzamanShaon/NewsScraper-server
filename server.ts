@@ -4,7 +4,7 @@ const { connectDB } = require("./DB/ConnectDB");
 const cors = require("cors");
 const path = require("path");
 require("dotenv").config();
-const express = require("express");
+import express from "express";
 const cookieParser = require("cookie-parser");
 import { Request, Response, NextFunction } from 'express';
 
@@ -27,24 +27,16 @@ app.get("/", (req:Request, res:Response) => {
   res.status(200).json({ message: "welcome" });
 });
 
-
-
 app.set("view engine", "ejs");
 app.use(express.static(path.join(__dirname, "views")));
 
 app.use(express.static(path.join(__dirname, "public")));
 
-app.get("/show", (req, res) => {
-  const data = {
-    name: "Json Roy",
-  };
-  res.send("Hii");
-});
-
-
-
-
-app.use((error, req, res, next) => {
+interface CustomError extends Error {
+    status?: number;
+    message: string;
+}
+app.use((error:CustomError, req:Request, res:Response, next:NextFunction) => {
   const message = error.message ? error.message : "Server Error Occured";
   const status = error.status ? error.status : 500;
   res.status(status).json({ success: false, message });
